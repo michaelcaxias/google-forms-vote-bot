@@ -18,7 +18,7 @@ const luizBody = {
 const increaseVotes = () => {
   const votes = fs.readFileSync("contador-de-votos.txt", "utf8");
   const newVotes = parseInt(votes) + 1;
-  fs.writeFileSync("votes.txt", newVotes.toString());
+  fs.writeFileSync("contador-de-votos.txt", newVotes.toString());
   console.log(`Voto computado: ${newVotes}`);
 };
 
