@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 import fs from "fs";
 
-const luizBody = {
+const payload = {
   form_id: "626472606fddfb4a1398b066",
   email: "",
   responses: [
@@ -43,7 +43,7 @@ const vote = async (body) => {
 
 const main = async () => {
   for (let index = 0; index < 10000; index += 1) {
-    await vote(luizBody);
+    await vote(payload);
   }
 };
 
