@@ -42,7 +42,7 @@ const vote = async (body) => {
 };
 
 const main = async () => {
-  for (let index = 0; index < 100; index += 1) {
+  for (let index = 0; index < 1000; index += 1) {
     await vote(luizBody);
   }
 };
