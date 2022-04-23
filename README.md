@@ -6,7 +6,7 @@ Altere o **Payload** no arquivo `index.js` para especificar a opção de voto.
 
 ## 💻 Como iniciar
 
-> Para iniciar este bot é necessário ter o Node instalado em sua maquina com a versão **LTS 16.14**
+> Para iniciar este bot é necessário ter o Node instalado em sua maquina com a versão **LTS 16.14**, se não possuir [baixe-o aqui](https://nodejs.org/en/download/).
 
 #### 1. Faça o download do script
 
