@@ -15,7 +15,7 @@ const navigationPage = async (browser: puppeteer.Browser) => {
   await page.goto(URL);
 
   console.log('Waiting for navigation...');
-  await page.waitForNavigation();
+  await page.waitForSelector('.ulDsOb');
 
   await page.$$eval('.ulDsOb', (options) => { 
     for (const option of options) {
@@ -30,22 +30,24 @@ const navigationPage = async (browser: puppeteer.Browser) => {
   console.log('Voting...');
   await page.click('.pessoa-votada');
 
+  await page.screenshot({ path: 'vote.png' });
+
   console.log('Submitting...');
   await page.click('.QvWxOd');
 
   await page.waitForNavigation();
   increaseVotes()
-  await page.screenshot({ path: 'example.png' });
+  await page.screenshot({ path: 'sumitted.png' });
   await page.close();
   console.log('Page closed');
 }
 
 const main = async () => {
   const browser: puppeteer.Browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
   });
 
-  for (let index = 0; index < 100; index += 1) { 
+  for (let index = 0; index < 1000; index += 1) { 
     await navigationPage(browser);
   }
 
