@@ -14,22 +14,26 @@ const navigationPage = async (browser: puppeteer.Browser) => {
   console.log('Navigating to page...');
   await page.goto(URL);
 
+  console.log('Waiting for navigation...');
   await page.waitForNavigation();
 
   await page.$$eval('.ulDsOb', (options) => { 
+    console.log('Finding for "Luiz"...');
     options.forEach((option) => {
       if (option.textContent === 'Luiz') {
         option.className = 'pessoa-votada';
+        console.log('Found "Luiz"');
       } else {
         option.className = 'pessoa-nao-votada';
       }
     });
   });
-
+  console.log('Voting...');
   await page.click('.pessoa-votada');
+  console.log('Submitting...');
   await page.click('.QvWxOd');
   await page.waitForNavigation();
-
+  increaseVotes()
   await page.screenshot({ path: 'example.png' });
   await page.close();
   console.log('Page closed');
@@ -40,7 +44,9 @@ const main = async () => {
     headless: false,
   });
 
-  await navigationPage(browser);
+  for (let index = 0; index < 10; index += 1) { 
+    await navigationPage(browser);
+  }
 
   await browser.close();
 };
