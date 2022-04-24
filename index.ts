@@ -18,13 +18,13 @@ const navigationPage = async (browser: puppeteer.Browser) => {
   await page.waitForNavigation();
 
   await page.$$eval('.ulDsOb', (options) => { 
-    options.forEach((option) => {
+    for (const option of options) {
       if (option.textContent === 'Luiz') {
         option.className = 'pessoa-votada';
       } else {
         option.className = 'pessoa-nao-votada';
       }
-    });
+    }
   });
 
   console.log('Voting...');
