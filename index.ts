@@ -4,7 +4,7 @@ import * as fs from 'fs';
 const increaseVotes = () => {
   const votes = fs.readFileSync('votes.txt', 'utf8');
   const newVotes = parseInt(votes) + 1;
-  console.log(newVotes);
+  console.log(`Number of votes: ${newVotes}`);
   fs.writeFileSync('votes.txt', newVotes.toString());
 }
 
@@ -18,20 +18,21 @@ const navigationPage = async (browser: puppeteer.Browser) => {
   await page.waitForNavigation();
 
   await page.$$eval('.ulDsOb', (options) => { 
-    console.log('Finding for "Luiz"...');
     options.forEach((option) => {
       if (option.textContent === 'Luiz') {
         option.className = 'pessoa-votada';
-        console.log('Found "Luiz"');
       } else {
         option.className = 'pessoa-nao-votada';
       }
     });
   });
+
   console.log('Voting...');
   await page.click('.pessoa-votada');
+
   console.log('Submitting...');
   await page.click('.QvWxOd');
+
   await page.waitForNavigation();
   increaseVotes()
   await page.screenshot({ path: 'example.png' });
@@ -44,7 +45,7 @@ const main = async () => {
     headless: false,
   });
 
-  for (let index = 0; index < 10; index += 1) { 
+  for (let index = 0; index < 100; index += 1) { 
     await navigationPage(browser);
   }
 
