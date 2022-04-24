@@ -1,5 +1,5 @@
-import puppeteer from 'puppeteer';
-import fs from 'fs';
+import * as puppeteer from 'puppeteer';
+import * as fs from 'fs';
 
 const increaseVotes = () => {
   const votes = fs.readFileSync('votes.txt', 'utf8');
@@ -8,36 +8,39 @@ const increaseVotes = () => {
   fs.writeFileSync('votes.txt', newVotes.toString());
 }
 
-const navigationPage = async (browser: puppeteer.Browser, index: number) => {
-  console.log(`---------- ${index} ----------`);
-  const URL = `https://surveyheart.com/form/625213cf4cd68f10e838edda`
+const navigationPage = async (browser: puppeteer.Browser) => {
+  const URL = `https://docs.google.com/forms/d/e/1FAIpQLScUkLpWYhDNuKLCcW8rvHg-LgsvdD49LDGvXlZ1ZP0atqzDjw/viewform`
   const page = await browser.newPage();
   console.log('Navigating to page...');
   await page.goto(URL);
 
-  await page.click('#Iniciar');
-  console.log('Clicked on button to start survey');
-  await page.click('.mdc-radio__native-control');
-  console.log('Voted for "Henrique"');
-  await page.click('#Submit');
-  console.log('Submitted form');
-  const waitRequest = await page.waitForRequest('https://surveyheart.com/response');
-  console.log(`Request method: ${waitRequest.method()}`);
-  console.log('Form submitted');
+  await page.waitForNavigation();
+
+  await page.$$eval('.ulDsOb', (options) => { 
+    options.forEach((option) => {
+      if (option.textContent === 'Luiz') {
+        option.className = 'pessoa-votada';
+      } else {
+        option.className = 'pessoa-nao-votada';
+      }
+    });
+  });
+
+  await page.click('.pessoa-votada');
+  await page.click('.QvWxOd');
+  await page.waitForNavigation();
 
   await page.screenshot({ path: 'example.png' });
   await page.close();
-  increaseVotes();
   console.log('Page closed');
 }
 
 const main = async () => {
   const browser: puppeteer.Browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
   });
-  for (let index = 0; index <= 10000; index += 1) {
-    await navigationPage(browser, index);
-  }
+
+  await navigationPage(browser);
 
   await browser.close();
 };
