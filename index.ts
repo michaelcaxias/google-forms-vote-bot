@@ -12,7 +12,6 @@ const increaseVotes = () => {
 const addClassToOptions = async (optionText: string, page: puppeteer.Page) => {
   await page.$$eval('.ulDsOb', (options, optionSelected) => { 
     for (const option of options) {
-      // aqui será o texto da opção que queremos votar (tem que ser entre aspas)
       const NAME = optionSelected;
   
       if (option.textContent === NAME) {
@@ -25,10 +24,8 @@ const addClassToOptions = async (optionText: string, page: puppeteer.Page) => {
 }
 
 const navigationPage = async (browser: puppeteer.Browser, URL: string, option: string) => {
-  // aqui será o link do formulário (tem que ser entre aspas)
-
   const page = await browser.newPage();
-  console.log('Abrindo página...');
+  console.log('Abrindo pagina...');
   await page.goto(URL);
   
   console.log('Esperando a tela carregar...');
@@ -52,10 +49,10 @@ const navigationPage = async (browser: puppeteer.Browser, URL: string, option: s
 }
 
 const main = async () => {
-  const URL = readlineSync.question('Link do formulário: ');
+  const URL = readlineSync.question('Link do formulario: ');
   const option = readlineSync.question('Nome da pessoa: ');
   const openBrowser = readlineSync.question('Abrir navegador? (s/n): ');
-  const votesNumber = readlineSync.question('Número de votos: ');
+  const votesNumber = readlineSync.question('Numero de votos: ');
 
   const transformAnswerToBool = openBrowser !== 's';
 
@@ -63,8 +60,12 @@ const main = async () => {
     headless: transformAnswerToBool,
   });
 
-  for (let index = 0; index < Number(votesNumber); index += 1) { 
-    await navigationPage(browser, URL, option);
+  for (let index = 0; index < Number(votesNumber); index += 1) {
+    try {
+      await navigationPage(browser, URL, option);
+    } catch (error) {
+      console.log('Algo deu errado, tente reiniciar o programa.');
+    }
   }
 
   await browser.close();
