@@ -28,40 +28,42 @@ const navigationPage = async (browser: puppeteer.Browser, URL: string, option: s
   // aqui será o link do formulário (tem que ser entre aspas)
 
   const page = await browser.newPage();
-  console.log('Navigating to page...');
+  console.log('Abrindo página...');
   await page.goto(URL);
   
-  console.log('Waiting for navigation...');
+  console.log('Esperando a tela carregar...');
   await page.waitForSelector('.ulDsOb');
   
   await addClassToOptions(option, page);
 
-  console.log('Voting...');
+  console.log('Votando em: ' + option);
   await page.click('.pessoa-votada');
 
   await page.screenshot({ path: './imagens/vote.png' });
 
-  console.log('Submitting...');
+  console.log('Clicando no botão "Enviar"...');
   await page.click('.QvWxOd');
 
   await page.waitForNavigation();
   increaseVotes()
   await page.screenshot({ path: './imagens/sumitted.png' });
   await page.close();
-  console.log('Page closed');
+  console.log('Fechando página...');
 }
 
 const main = async () => {
   const URL = readlineSync.question('Link do formulário: ');
   const option = readlineSync.question('Nome da pessoa: ');
   const openBrowser = readlineSync.question('Abrir navegador? (s/n): ');
+  const votesNumber = readlineSync.question('Número de votos: ');
+
   const transformAnswerToBool = openBrowser !== 's';
 
   const browser: puppeteer.Browser = await puppeteer.launch({
     headless: transformAnswerToBool,
   });
 
-  for (let index = 0; index < 1000; index += 1) { 
+  for (let index = 0; index < Number(votesNumber); index += 1) { 
     await navigationPage(browser, URL, option);
   }
 
