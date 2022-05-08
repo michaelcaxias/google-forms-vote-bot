@@ -5,7 +5,7 @@ import * as readlineSync from 'readline-sync';
 const increaseVotes = () => {
   const votes = fs.readFileSync('numero-de-votos.txt', 'utf8');
   const newVotes = parseInt(votes) + 1;
-  console.log(`Numéro do voto: ${newVotes}`);
+  console.log(`==================== Voto: ${newVotes} ====================`);
   fs.writeFileSync('numero-de-votos.txt', newVotes.toString());
 }
 
@@ -53,6 +53,7 @@ const main = async () => {
   const option = readlineSync.question('Nome da pessoa: ');
   const openBrowser = readlineSync.question('Abrir navegador? (s/n): ');
   const votesNumber = readlineSync.question('Numero de votos: ');
+  console.log(' ');
 
   const transformAnswerToBool = openBrowser !== 's';
 
@@ -64,7 +65,7 @@ const main = async () => {
     try {
       await navigationPage(browser, URL, option);
     } catch (error) {
-      console.log('Algo deu errado, tente reiniciar o programa.');
+      console.log('Algo deu errado, reiniciando o programa...');
     }
   }
 
