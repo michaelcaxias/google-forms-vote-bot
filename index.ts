@@ -60,7 +60,7 @@ const main = async () => {
   const URL = readlineSync.question(colors.bold.yellow('Link do formulario: '));
   const option = readlineSync.question(colors.bold.yellow('Nome da pessoa: '));
   const openBrowser = readlineSync.question(colors.bold.yellow('Abrir navegador? (s/n): '));
-  const votesNumber = readlineSync.question(colors.bold.yellow('Numero de votos: '));
+  const votesNumber = readlineSync.questionInt(colors.bold.yellow('Numero de votos: '));
   console.log(' ');
 
   const transformAnswerToBool = openBrowser !== 's';
@@ -69,7 +69,7 @@ const main = async () => {
     headless: transformAnswerToBool,
   });
 
-  for (let index = 0; index < Number(votesNumber); index += 1) {
+  for (let index = 0; index < votesNumber; index += 1) {
     await navigationPage(browser, URL, option);
   }
 
