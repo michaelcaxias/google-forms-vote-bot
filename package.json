@@ -21,6 +21,7 @@
   "devDependencies": {
     "@types/puppeteer": "^5.4.5",
     "@types/puppeteer-core": "^5.4.0",
+    "@types/readline-sync": "^1.4.4",
     "ts-node": "^10.7.0"
   }
 }
